@@ -13,6 +13,9 @@ def transform_xml(file_path):
     print("root", root)
 
     # Parcourir tous les noeuds 'point' et effectuer les transformations demandées
+
+
+    print("après anytype")
     for point in root.findall('.//point'):
         # Supprimer les attributs lineType="none" et lineType="solidLine"
         if 'lineType' in point.attrib and point.attrib['lineType'] in ['none', 'solidLine']:
@@ -22,10 +25,28 @@ def transform_xml(file_path):
         if 'showPointName' in point.attrib:
             point.attrib['showLabel'] = point.attrib.pop('showPointName')
 
+    for arc in root.findall('.//arc'):
+        # Supprimer les attributs lineType="none" et lineType="solidLine"
+        if 'penStyle' in arc.attrib and arc.attrib['penStyle'] in ['solidLine']:
+            arc.attrib['penStyle'] = 'hair'
+
+    for spline in root.findall('.//spline'):
+        # Supprimer les attributs lineType="none" et lineType="solidLine"
+        if 'penStyle' in spline.attrib and spline.attrib['penStyle'] in ['solidLine']:
+            spline.attrib['penStyle'] = 'hair'
+
     for line in root.findall('.//line'):
         # Supprimer les attributs lineType="none" et lineType="solidLine"
         if 'lineType' in line.attrib and line.attrib['lineType'] in ['none', 'solidLine']:
             del line.attrib['lineType']
+
+    print("avant anytype")
+    for anytype in root.findall('./draw/modeling/*'):
+        print(anytype)
+        # Supprimer les attributs lineType="none" et lineType="solidLine"
+        if 'lineType' in anytype.attrib and anytype.attrib['lineType'] in ['none', 'solidLine']:
+            print(anytype, anytype.attrib['lineType'])
+            del anytype.attrib['lineType']
 
     for child in root:
         print(child.tag, child.attrib)
